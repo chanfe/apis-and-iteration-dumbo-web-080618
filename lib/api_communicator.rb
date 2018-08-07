@@ -6,10 +6,13 @@ def get_character_movies_from_api(character)
   #make the web request
   response_hash = get_json('http://www.swapi.co/api/people/')
   movie_array = []
-  response_hash["results"].each do |movies_in|
-    if character == movies_in["name"].downcase
-      movie_array = movies_in["films"]
+  while response_hash["next"] != nil do
+    response_hash["results"].each do |movies_in|
+      if character == movies_in["name"].downcase
+        movie_array = movies_in["films"]
+      end
     end
+    response_hash = get_json(response_hash["next"])
   end
   movie_array
   # NOTE: in this demonstration we name many of the variables _hash or _array.
